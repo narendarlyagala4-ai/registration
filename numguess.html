@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .game {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .guess-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .reset-btn {
+      background: #f44336;
+      color: white;
+    }
+
+    #message {
+      margin-top: 10px;
+      font-weight: bold;
+      min-height: 20px;
+    }
+
+    #count {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game">
+    <h2>🎯 Guess the Number</h2>
+    <p>Guess a number between 1 and 100</p>
+    <p>You have <b>10 guesses</b></p>
+
+    <input type="number" id="guess" placeholder="Enter your guess">
+    
+    <button class="guess-btn" onclick="checkGuess()">Guess</button>
+    <button class="reset-btn" onclick="resetGame()">Reset</button>
+
+    <p id="message"></p>
+    <p id="count"></p>
+  </div>
+
+  <script>
+    let number;
+    let guesses;
+    const maxGuesses = 10;
+
+    function startGame() {
+      number = Math.floor(Math.random() * 100) + 1;
+      guesses = 0;
+      document.getElementById("message").textContent = "";
+      document.getElementById("count").textContent = "";
+      document.getElementById("guess").value = "";
+      document.getElementById("guess").disabled = false;
+    }
+
+    function checkGuess() {
+      const input = document.getElementById("guess");
+      const guess = Number(input.value);
+      const message = document.getElementById("message");
+      const count = document.getElementById("count");
+
+      if (!guess) {
+        message.textContent = "❗ Enter a number!";
+        return;
+      }
+
+      guesses++;
+      count.textContent = `Guesses: ${guesses} / ${maxGuesses}`;
+
+      if (guess < number) {
+        message.textContent = "📉 Too low!";
+      } else if (guess > number) {
+        message.textContent = "📈 Too high!";
+      } else {
+        message.textContent = "🎉 Correct! You won!";
+        input.disabled = true;
+        return;
+      }
+
+      if (guesses >= maxGuesses) {
+        message.textContent = `😢 Game Over! The number was ${number}`;
+        input.disabled = true;
+      }
+    }
+
+    function resetGame() {
+      startGame();
+    }
+
+    startGame();
+  </script>
+
+</body>
+</html>
